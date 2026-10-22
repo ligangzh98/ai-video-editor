@@ -84,6 +84,25 @@ cd youtube-edit/scripts && python3 -m unittest tests
 
 ---
 
+## 转录：[VoiceMagic](https://voicemagic.demo2easy.com/)
+
+本仓库的剪切、节拍对齐与叠层锚词都依赖**词级时间戳**。[VoiceMagic](https://voicemagic.demo2easy.com/) 是配套的 AI 语音工作台：在同一套流程里提供**语音转文字**（ASR）与**声音克隆**（TTS），面向内容创作、播客后期与产品配音。除网页与微信小程序外，也可通过 **MCP** 接到 Cursor、Claude Code、Codex 等客户端，在对话里查额度、提交转写、看任务进度，无需反复切浏览器。
+
+与本项目相关的要点：
+
+| 项目 | 说明 |
+|------|------|
+| **在本仓库中的角色** | `transcribe-api.py` / `voicemagic_asr.py` 调用 VoiceMagic ASR，产出 `transcript.json`（`words[]` 含 `text`、`start`、`end`），供 `paper-cut.py`、`phrase-times.py`、`beat-check.py` 等使用 |
+| **接入方式** | 环境变量 `VOICEMAGIC_MCP_TOKEN`（或 `VOICEMAGIC_TOKEN`）；未设置时脚本会读取 `~/.cursor/mcp.json` 里 `voicemagic` 的 MCP 令牌 |
+| **令牌** | 登录官网 → **我的 → MCP 令牌**，创建以 `vmpat_` 开头的令牌，按 [MCP 文档](https://voicemagic.demo2easy.com/) 配置 Streamable HTTP |
+| **输出格式** | 纯文本、SRT，或**字词级时间戳**（本剪辑流默认需要后者；与网页 ASR 一致，通常需有效会员额度） |
+| **引擎** | `transcribe-api.py --engine` 默认为 `auto`，也可显式指定本地或其它引擎 |
+| **安全** | 不要把令牌写入仓库或 Skill 文件；上传前脚本会用 ffmpeg 将音频转为 MP3 再请求（与 VoiceMagic Skill 一致） |
+
+更细的转录规则（长文件分窗、幻觉修复、`retranscribe-holes.py` 等）见 [`youtube-edit/SKILL.md` → 转录](youtube-edit/SKILL.md)。
+
+---
+
 ## 三条主路线
 
 详情与命令见 [`youtube-edit/SKILL.md`](youtube-edit/SKILL.md) 的「路线表」。
