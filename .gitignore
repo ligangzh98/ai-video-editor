@@ -1,0 +1,21 @@
+# OS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+
+# local tooling
+.claude/settings.local.json
+node_modules/
+
+# edit outputs — no footage, music or renders ship with this kit (see youtube-edit/SKILL.md)
+videos/
+*.mp4
+*.mov
+*.wav
+*.m4a
+*.aac
+
+# MCP reference material — local only, never commit
+mcp 参考/
